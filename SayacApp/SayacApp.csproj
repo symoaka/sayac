@@ -8,6 +8,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     <AssemblyName>Sayac</AssemblyName>
+    <Version>0.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
