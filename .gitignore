@@ -26,6 +26,10 @@ artifacts/
 Thumbs.db
 ehthumbs.db
 
+# ---- Markdown (ignore notes/scratch; keep READMEs) ----
+*.md
+!README.md
+
 # ---- App runtime data (lives in OS app-data, never in repo) ----
 sayac_data.ini
 settings.json

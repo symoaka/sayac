@@ -8,8 +8,8 @@ stays on top of everything.
 Cross-platform (**Windows + macOS**), built with **Avalonia UI / .NET 8 / C#**
 using the MVVM pattern.
 
-> This is a modern rewrite of the original single-file AutoHotkey v2 app
-> ([`sayac.ahk`](sayac.ahk), Windows-only), kept in the repo for reference.
+> This is a modern rewrite of an original single-file AutoHotkey v2 app
+> (Windows-only).
 
 ## Features
 
@@ -75,7 +75,6 @@ SayacApp/
                  (TR/EN), HotkeyService (SharpHook), ClickThroughService (Win/macOS)
   ViewModels/    Main, Counter, Mini, CounterSettings, AppSettings
   Views/         MainWindow, MiniWindow, CounterSettingsWindow, AppSettingsWindow
-sayac.ahk        Original AutoHotkey v2 version (reference only)
 ```
 
 ## Stack
