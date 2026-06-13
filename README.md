@@ -27,20 +27,78 @@ using the MVVM pattern.
 - **System tray / menu-bar resident** — close the main window and it hides to the
   tray; quit from the tray menu.
 
-## Run
+## Getting started
 
-Requires the **.NET 8 SDK**.
+There are no prebuilt downloads yet, so you build it from source. It's three steps
+and takes a couple of minutes. No prior .NET experience needed.
+
+### 1. Install the .NET 8 SDK
+
+The SDK is the free toolkit that builds and runs the app.
+
+- Download it from **https://dotnet.microsoft.com/download/dotnet/8.0** — pick the
+  **SDK** (not just the "Runtime") for your operating system and run the installer.
+- On macOS you can instead use Homebrew: `brew install dotnet-sdk`
+- On Windows you can instead use winget: `winget install Microsoft.DotNet.SDK.8`
+
+Then open a **new** terminal and confirm it's installed:
+
+```bash
+dotnet --version
+```
+
+You should see a version starting with `8.` (e.g. `8.0.422`). If you get
+"command not found", close and reopen your terminal, or restart your computer so the
+installer's PATH changes take effect.
+
+### 2. Get the code
+
+If you have **git**:
+
+```bash
+git clone https://github.com/symoaka/sayac.git
+cd sayac
+```
+
+No git? On the GitHub page click the green **Code** button → **Download ZIP**, then
+unzip it and open a terminal in the unzipped folder.
+
+### 3. Run it
 
 ```bash
 cd SayacApp
 dotnet run
 ```
 
-The app opens the main window plus the mini overlay and lives in the system tray
-(Windows) / menu bar (macOS).
+The first run downloads dependencies and compiles, so it takes a little longer — that's
+normal. After that the main window and the mini overlay open, and the app lives in the
+system tray (Windows) / menu bar (macOS). **Closing the main window hides it to the
+tray** rather than quitting; use the tray/menu-bar icon to quit.
 
-To build a binary instead of running: `dotnet build` (output under
-`SayacApp/bin/`).
+To stop the app from the terminal, press `Ctrl + C`.
+
+### Build without running
+
+To produce a binary instead of launching:
+
+```bash
+cd SayacApp
+dotnet build
+```
+
+The result lands in `SayacApp/bin/Debug/net8.0/`.
+
+### Troubleshooting
+
+- **`dotnet: command not found`** — the SDK isn't installed or your terminal hasn't
+  picked it up yet. Reopen the terminal (or reboot) after installing.
+- **A different .NET version is installed (e.g. 9.x)** — that's fine; the .NET 8 SDK
+  can sit alongside others. Just make sure the .NET **8** SDK is present
+  (`dotnet --list-sdks` should list an `8.x` entry).
+- **Hotkeys don't work on macOS** — grant Accessibility permission (see
+  [Platform notes](#platform-notes)).
+- **macOS "app is from an unidentified developer"** — this only applies to packaged
+  apps. Running from source with `dotnet run` does not trigger it.
 
 ## Data & persistence
 
