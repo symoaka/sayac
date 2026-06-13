@@ -1,0 +1,76 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:svc="using:SayacApp.Services"
+        x:Class="SayacApp.Views.AppSettingsWindow"
+        Width="440" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="{Binding [SettingsLong], Source={x:Static svc:LocalizationService.Instance}}">
+
+    <StackPanel Margin="18" Spacing="12">
+        <TextBlock Classes="h1"
+                   Text="{Binding [SettingsLong], Source={x:Static svc:LocalizationService.Instance}}" />
+
+        <!-- Custom shortcuts -->
+        <TextBlock Classes="label"
+                   Text="{Binding [CustomShortcuts], Source={x:Static svc:LocalizationService.Instance}}" />
+
+        <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto">
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Foreground="#E8E8E8"
+                       Text="{Binding [ToggleMini], Source={x:Static svc:LocalizationService.Instance}}" />
+            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" MinWidth="120" Margin="10,0,10,0"
+                       Foreground="#FFFFFF" Text="{Binding MiniHotkeyText}" />
+            <Button Grid.Row="0" Grid.Column="2" Command="{Binding ListenMiniCommand}"
+                    Content="{Binding [Listen], Source={x:Static svc:LocalizationService.Instance}}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="#E8E8E8" Margin="0,8,0,0"
+                       Text="{Binding [ToggleMain], Source={x:Static svc:LocalizationService.Instance}}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" MinWidth="120" Margin="10,8,10,0"
+                       Foreground="#FFFFFF" Text="{Binding MainHotkeyText}" />
+            <Button Grid.Row="1" Grid.Column="2" Command="{Binding ListenMainCommand}" Margin="0,8,0,0"
+                    Content="{Binding [Listen], Source={x:Static svc:LocalizationService.Instance}}" />
+        </Grid>
+
+        <TextBlock Foreground="#AAAAAA" FontSize="12" TextWrapping="Wrap" Text="{Binding Status}" />
+
+        <Border Height="1" Background="#2A2A2A" />
+
+        <!-- Mini controls -->
+        <TextBlock Classes="label"
+                   Text="{Binding [MiniControls], Source={x:Static svc:LocalizationService.Instance}}" />
+
+        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+            <CheckBox Grid.Row="0" Grid.Column="0" IsChecked="{Binding Settings.MiniLocked}"
+                      Content="{Binding [MiniLocked], Source={x:Static svc:LocalizationService.Instance}}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Foreground="#E8E8E8" Margin="0,10,0,0"
+                       Text="{Binding [Show], Source={x:Static svc:LocalizationService.Instance}}" />
+            <ComboBox Grid.Row="1" Grid.Column="1" Width="120" Margin="0,10,0,0" SelectedIndex="{Binding DisplayIndex}">
+                <ComboBoxItem>1</ComboBoxItem>
+                <ComboBoxItem>3</ComboBoxItem>
+                <ComboBoxItem>5</ComboBoxItem>
+                <ComboBoxItem Content="{Binding [All], Source={x:Static svc:LocalizationService.Instance}}" />
+            </ComboBox>
+
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Foreground="#E8E8E8" Margin="0,10,0,0"
+                       Text="{Binding [MiniOpacity], Source={x:Static svc:LocalizationService.Instance}}" />
+            <Slider Grid.Row="2" Grid.Column="1" Width="180" Minimum="0" Maximum="255" Margin="0,10,0,0"
+                    Value="{Binding Settings.MiniOpacity}" />
+        </Grid>
+
+        <Border Height="1" Background="#2A2A2A" />
+
+        <!-- Language -->
+        <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Foreground="#E8E8E8"
+                       Text="{Binding [Language], Source={x:Static svc:LocalizationService.Instance}}" />
+            <ComboBox Grid.Column="1" Width="120" SelectedIndex="{Binding LanguageIndex}">
+                <ComboBoxItem>Türkçe</ComboBoxItem>
+                <ComboBoxItem>English</ComboBoxItem>
+            </ComboBox>
+        </Grid>
+
+        <Button HorizontalAlignment="Right" Click="OnClose"
+                Content="{Binding [Close], Source={x:Static svc:LocalizationService.Instance}}" />
+    </StackPanel>
+</Window>

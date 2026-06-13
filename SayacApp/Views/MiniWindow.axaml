@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SayacApp.Views.MiniWindow"
+        Title="Sayac Mini"
+        SystemDecorations="None"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        PointerPressed="OnPointerPressed">
+
+    <ItemsControl ItemsSource="{Binding Visible}" Margin="0">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Grid Margin="0,2" Width="{Binding ManualWidth}" Height="{Binding ManualHeight}">
+                    <Border Background="{Binding BackgroundBrush}" CornerRadius="4"
+                            IsVisible="{Binding !BgTransparent}"
+                            Opacity="{Binding $parent[ItemsControl].DataContext.BackgroundOpacity}" />
+                    <TextBlock Text="{Binding RowText}" Foreground="{Binding TextBrush}"
+                               FontSize="{Binding FontSize}" FontFamily="Segoe UI, San Francisco, Inter"
+                               Margin="10,4" VerticalAlignment="Center">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="Black" BlurRadius="3" OffsetX="0" OffsetY="1" Opacity="0.85" />
+                        </TextBlock.Effect>
+                    </TextBlock>
+                </Grid>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</Window>

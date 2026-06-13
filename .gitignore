@@ -1,0 +1,26 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userprefs
+
+# .NET
+project.lock.json
+project.assets.json
+artifacts/
+.vs/
+
+# Rider / VS / VSCode
+.idea/
+*.DotSettings.user
+
+# macOS
+.DS_Store
+
+# App runtime data (lives in OS app-data, never in repo)
+sayac_data.ini
+settings.json
+
+# Claude Code personal/local settings (machine-specific)
+.claude/settings.local.json
