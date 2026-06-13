@@ -1,26 +1,34 @@
-# Build output
+# ---- .NET / Avalonia build output ----
 [Bb]in/
 [Oo]bj/
+publish/
 *.user
 *.suo
 *.userprefs
+*.cache
+*.nupkg
+*.snupkg
 
-# .NET
+# .NET intermediates
 project.lock.json
 project.assets.json
 artifacts/
 .vs/
 
-# Rider / VS / VSCode
+# ---- IDEs / editors ----
 .idea/
+.vscode/
 *.DotSettings.user
+*.swp
 
-# macOS
+# ---- OS cruft ----
 .DS_Store
+Thumbs.db
+ehthumbs.db
 
-# App runtime data (lives in OS app-data, never in repo)
+# ---- App runtime data (lives in OS app-data, never in repo) ----
 sayac_data.ini
 settings.json
 
-# Claude Code personal/local settings (machine-specific)
+# ---- Claude Code personal/local settings (machine-specific) ----
 .claude/settings.local.json
