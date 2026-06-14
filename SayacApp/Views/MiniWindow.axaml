@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="SayacApp.Views.MiniWindow"
-        Title="Sayac Mini"
+        Title="Soonish Mini"
         SystemDecorations="None"
         Background="Transparent"
         TransparencyLevelHint="Transparent"
@@ -16,14 +16,14 @@
         <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <Grid Margin="0,2" Width="{Binding ManualWidth}" Height="{Binding ManualHeight}">
-                    <Border Background="{Binding BackgroundBrush}" CornerRadius="4"
+                    <Border Background="{Binding BackgroundBrush}" CornerRadius="6"
                             IsVisible="{Binding !BgTransparent}"
                             Opacity="{Binding $parent[ItemsControl].DataContext.BackgroundOpacity}" />
                     <TextBlock Text="{Binding RowText}" Foreground="{Binding TextBrush}"
                                FontSize="{Binding FontSize}" FontFamily="Segoe UI, San Francisco, Inter"
-                               Margin="10,4" VerticalAlignment="Center">
+                               Margin="12,5" VerticalAlignment="Center">
                         <TextBlock.Effect>
-                            <DropShadowEffect Color="Black" BlurRadius="3" OffsetX="0" OffsetY="1" Opacity="0.85" />
+                            <DropShadowEffect Color="Black" BlurRadius="4" OffsetX="0" OffsetY="1" Opacity="0.7" />
                         </TextBlock.Effect>
                     </TextBlock>
                 </Grid>

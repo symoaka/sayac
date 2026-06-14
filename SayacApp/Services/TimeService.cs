@@ -13,9 +13,21 @@ public static class TimeService
     /// <summary>"2 gün 03:11:09", "03:11:09", or "Tamamlandı" when the target has passed.</summary>
     public static string FormatRemaining(DateTimeOffset targetUtc, DateTimeOffset nowUtc)
     {
+        var (big, clock) = FormatRemainingParts(targetUtc, nowUtc);
+        if (clock.Length == 0) return big;                 // completed
+        return big.Length > 0 ? $"{big} {clock}" : clock;  // "2 gün 03:11:09" or "03:11:09"
+    }
+
+    /// <summary>
+    /// Split countdown for the tile UI: <c>big</c> is the days portion ("364 gün" / "11 d",
+    /// empty under a day) and <c>clock</c> is "HH:mm:ss". When completed, <c>big</c> is the
+    /// "Completed" label and <c>clock</c> is empty.
+    /// </summary>
+    public static (string big, string clock) FormatRemainingParts(DateTimeOffset targetUtc, DateTimeOffset nowUtc)
+    {
         var diff = targetUtc - nowUtc;
         if (diff.TotalSeconds <= 0)
-            return Loc["Completed"];
+            return (Loc["Completed"], "");
 
         var total = (long)Math.Floor(diff.TotalSeconds);
         var days = total / 86400;
@@ -26,7 +38,8 @@ public static class TimeService
         var secs = rest % 60;
 
         var clock = $"{hours:00}:{mins:00}:{secs:00}";
-        return days > 0 ? $"{days} {Loc["DayUnit"]} {clock}" : clock;
+        var big = days > 0 ? $"{days} {Loc["DayUnit"]}" : "";
+        return (big, clock);
     }
 
     public static bool IsCompleted(DateTimeOffset targetUtc, DateTimeOffset nowUtc) =>

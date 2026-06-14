@@ -27,6 +27,20 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty] private bool _hasCounters;
 
+    /// <summary>Summary shown on the "When" popover button, e.g. "14 Jun 2026 · 15:12".</summary>
+    public string NewWhenSummary
+    {
+        get
+        {
+            if (NewDate is null || NewTime is null) return "—";
+            var dt = NewDate.Value.Date + NewTime.Value;
+            return dt.ToString("dd MMM yyyy · HH:mm");
+        }
+    }
+
+    partial void OnNewDateChanged(DateTimeOffset? value) => OnPropertyChanged(nameof(NewWhenSummary));
+    partial void OnNewTimeChanged(TimeSpan? value) => OnPropertyChanged(nameof(NewWhenSummary));
+
     public event Action<CounterViewModel>? EditCounterRequested;
     public event Action? OpenSettingsRequested;
     public event Action<string, string>? MessageRequested;
@@ -75,7 +89,16 @@ public partial class MainViewModel : ObservableObject
         }
 
         var targetUtc = TimeService.LocalToUtc(NewDate.Value.LocalDateTime.Date, NewTime.Value);
-        AttachCounter(new CounterViewModel(new CounterData { Name = name, TargetUtc = targetUtc }));
+        // Give each new counter a vibrant identity color (cycles through the colored
+        // part of the palette, indices 8..23) so the tiles are colorful out of the box.
+        var colored = Palette.Colors;
+        var color = colored[8 + (Counters.Count % (colored.Length - 8))];
+        AttachCounter(new CounterViewModel(new CounterData
+        {
+            Name = name,
+            TargetUtc = targetUtc,
+            BgColor = color,
+        }));
 
         NewName = "";
         UpdateHasCounters();

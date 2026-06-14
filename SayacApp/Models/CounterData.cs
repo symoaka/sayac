@@ -11,6 +11,9 @@ public sealed class CounterData
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = "";
 
+    /// <summary>Optional emoji shown on the counter's tile. Empty falls back to the name initial.</summary>
+    public string Icon { get; set; } = "";
+
     /// <summary>Target instant stored in UTC. Display converts to local time + DST.</summary>
     public DateTimeOffset TargetUtc { get; set; } = DateTimeOffset.UtcNow;
 

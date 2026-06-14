@@ -1,4 +1,4 @@
-# Sayaç
+# Soonish
 
 A lightweight **countdown-timer** app with an always-on-top floating overlay.
 Define named counters with a target date/time and watch the time remaining tick
@@ -6,10 +6,11 @@ down — both in a management window and in a small, draggable mini overlay that
 stays on top of everything.
 
 Cross-platform (**Windows + macOS**), built with **Avalonia UI / .NET 8 / C#**
-using the MVVM pattern.
+using the MVVM pattern. Ships with a modern themed UI (light + dark), emoji counter
+icons, and a colorful tile grid.
 
-> This is a modern rewrite of an original single-file AutoHotkey v2 app
-> (Windows-only).
+> Soonish was formerly named *Sayaç*. It began as a modern rewrite of an original
+> single-file AutoHotkey v2 app (Windows-only).
 
 ## Features
 
@@ -27,10 +28,24 @@ using the MVVM pattern.
 - **System tray / menu-bar resident** — close the main window and it hides to the
   tray; quit from the tray menu.
 
-## Getting started
+## Download
 
-There are no prebuilt downloads yet, so you build it from source. It's three steps
-and takes a couple of minutes. No prior .NET experience needed.
+Prebuilt, self-contained builds (no .NET install required) are on the
+[**Releases**](https://github.com/symoaka/sayac/releases/latest) page:
+
+- **Windows (x64)** — `Soonish-win-x64.zip`. Unzip and run `Soonish.exe`. Windows
+  SmartScreen may warn because the build is unsigned: click **More info → Run anyway**.
+- **macOS (Apple Silicon)** — `Soonish-osx-arm64.zip`. Unzip and move `Soonish.app`
+  to Applications. The build is unsigned, so on first launch macOS Gatekeeper blocks
+  it: **right-click the app → Open**, then confirm (or run
+  `xattr -dr com.apple.quarantine Soonish.app`).
+
+Prefer to build from source? Follow the steps below.
+
+## Getting started (from source)
+
+Build it from source in three steps — a couple of minutes, no prior .NET experience
+needed.
 
 ### 1. Install the .NET 8 SDK
 

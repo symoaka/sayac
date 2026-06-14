@@ -10,6 +10,10 @@ namespace SayacApp.Models;
 public partial class AppSettings : ObservableObject
 {
     [ObservableProperty] private string _language = "tr";          // "tr" | "en"
+
+    /// <summary>UI theme: "System" follows the OS, otherwise "Light" | "Dark".</summary>
+    [ObservableProperty] private string _themeMode = "Dark";
+
     [ObservableProperty] private bool _miniVisible = true;
     [ObservableProperty] private bool _miniLocked = true;
 

@@ -47,9 +47,11 @@ public sealed class LocalizationService : INotifyPropertyChanged
 
     private static readonly Dictionary<string, string> Tr = new()
     {
-        ["AppTitle"] = "Sayaçlar",
-        ["MiniTitle"] = "Sayaç Mini",
+        ["AppTitle"] = "Soonish",
+        ["MiniTitle"] = "Soonish Mini",
         ["ColName"] = "Sayaç adı",
+        ["When"] = "Ne zaman",
+        ["Icon"] = "Simge",
         ["ColTarget"] = "Hedef tarih",
         ["ColTime"] = "Saat",
         ["Add"] = "Ekle",
@@ -81,6 +83,11 @@ public sealed class LocalizationService : INotifyPropertyChanged
         ["Show"] = "Göster",
         ["All"] = "Hepsi",
         ["Language"] = "Dil",
+        ["Appearance"] = "Görünüm",
+        ["Theme"] = "Tema",
+        ["ThemeSystem"] = "Sistem",
+        ["ThemeLight"] = "Açık",
+        ["ThemeDark"] = "Koyu",
         ["MiniOpacity"] = "Mini saydamlık",
         ["HotkeyHint"] = "Bir Dinle düğmesine basın, sonra modifier + tuş kombinasyonunu girin.",
         ["PressCombo"] = "Kombinasyona basın...",
@@ -96,9 +103,11 @@ public sealed class LocalizationService : INotifyPropertyChanged
 
     private static readonly Dictionary<string, string> En = new()
     {
-        ["AppTitle"] = "Counters",
-        ["MiniTitle"] = "Counter Mini",
+        ["AppTitle"] = "Soonish",
+        ["MiniTitle"] = "Soonish Mini",
         ["ColName"] = "Counter name",
+        ["When"] = "When",
+        ["Icon"] = "Icon",
         ["ColTarget"] = "Target date",
         ["ColTime"] = "Time",
         ["Add"] = "Add",
@@ -130,6 +139,11 @@ public sealed class LocalizationService : INotifyPropertyChanged
         ["Show"] = "Show",
         ["All"] = "All",
         ["Language"] = "Language",
+        ["Appearance"] = "Appearance",
+        ["Theme"] = "Theme",
+        ["ThemeSystem"] = "System",
+        ["ThemeLight"] = "Light",
+        ["ThemeDark"] = "Dark",
         ["MiniOpacity"] = "Mini opacity",
         ["HotkeyHint"] = "Press a Listen button, then enter a modifier + key combination.",
         ["PressCombo"] = "Press a combination...",

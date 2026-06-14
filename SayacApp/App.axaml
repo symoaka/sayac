@@ -1,23 +1,81 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="SayacApp.App"
-             RequestedThemeVariant="Dark">
+             x:Class="SayacApp.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+
+                <!-- ============ DARK ============ -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="AppBackgroundBrush">#111111</SolidColorBrush>
+                    <SolidColorBrush x:Key="SurfaceBrush">#1A1A1A</SolidColorBrush>
+                    <SolidColorBrush x:Key="SurfaceAltBrush">#222222</SolidColorBrush>
+                    <SolidColorBrush x:Key="BorderBrush">#2E2E2E</SolidColorBrush>
+                    <SolidColorBrush x:Key="DividerBrush">#2A2A2A</SolidColorBrush>
+                    <SolidColorBrush x:Key="TextPrimaryBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="TextSecondaryBrush">#E8E8E8</SolidColorBrush>
+                    <SolidColorBrush x:Key="TextMutedBrush">#AAAAAA</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentBrush">#2DD4BF</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentHoverBrush">#36E3CD</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentPressedBrush">#23B8A5</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentForegroundBrush">#06201C</SolidColorBrush>
+                    <SolidColorBrush x:Key="ControlHoverBrush">#2C2C2C</SolidColorBrush>
+                    <SolidColorBrush x:Key="ControlPressedBrush">#3A3A3A</SolidColorBrush>
+                    <SolidColorBrush x:Key="DangerBrush">#F87171</SolidColorBrush>
+                    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+                        <GradientStop Color="#2DD4BF" Offset="0" />
+                        <GradientStop Color="#818CF8" Offset="1" />
+                    </LinearGradientBrush>
+
+                    <!-- Thread teal through Fluent's built-in controls (slider fill,
+                         checkbox, focus rings, combobox selection). -->
+                    <Color x:Key="SystemAccentColor">#2DD4BF</Color>
+                    <Color x:Key="SystemAccentColorDark1">#26C0AD</Color>
+                    <Color x:Key="SystemAccentColorDark2">#23B8A5</Color>
+                    <Color x:Key="SystemAccentColorDark3">#1FA797</Color>
+                    <Color x:Key="SystemAccentColorLight1">#36E3CD</Color>
+                    <Color x:Key="SystemAccentColorLight2">#5BEAD8</Color>
+                    <Color x:Key="SystemAccentColorLight3">#80F0E2</Color>
+                </ResourceDictionary>
+
+                <!-- ============ LIGHT ============ -->
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="AppBackgroundBrush">#F5F6F7</SolidColorBrush>
+                    <SolidColorBrush x:Key="SurfaceBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="SurfaceAltBrush">#ECEEF0</SolidColorBrush>
+                    <SolidColorBrush x:Key="BorderBrush">#D8DCE0</SolidColorBrush>
+                    <SolidColorBrush x:Key="DividerBrush">#E2E5E8</SolidColorBrush>
+                    <SolidColorBrush x:Key="TextPrimaryBrush">#1A1D21</SolidColorBrush>
+                    <SolidColorBrush x:Key="TextSecondaryBrush">#3A3F45</SolidColorBrush>
+                    <SolidColorBrush x:Key="TextMutedBrush">#6B7178</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentBrush">#2DD4BF</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentHoverBrush">#26C0AD</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentPressedBrush">#1FA797</SolidColorBrush>
+                    <SolidColorBrush x:Key="AccentForegroundBrush">#06201C</SolidColorBrush>
+                    <SolidColorBrush x:Key="ControlHoverBrush">#E4E7EA</SolidColorBrush>
+                    <SolidColorBrush x:Key="ControlPressedBrush">#D5D9DD</SolidColorBrush>
+                    <SolidColorBrush x:Key="DangerBrush">#E0556A</SolidColorBrush>
+                    <LinearGradientBrush x:Key="AccentGradientBrush" StartPoint="0%,0%" EndPoint="100%,0%">
+                        <GradientStop Color="#2DD4BF" Offset="0" />
+                        <GradientStop Color="#818CF8" Offset="1" />
+                    </LinearGradientBrush>
+
+                    <Color x:Key="SystemAccentColor">#2DD4BF</Color>
+                    <Color x:Key="SystemAccentColorDark1">#26C0AD</Color>
+                    <Color x:Key="SystemAccentColorDark2">#1FA797</Color>
+                    <Color x:Key="SystemAccentColorDark3">#188A7D</Color>
+                    <Color x:Key="SystemAccentColorLight1">#36E3CD</Color>
+                    <Color x:Key="SystemAccentColorLight2">#5BEAD8</Color>
+                    <Color x:Key="SystemAccentColorLight3">#80F0E2</Color>
+                </ResourceDictionary>
+
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 
     <Application.Styles>
         <FluentTheme />
-
-        <!-- App-wide accents for the dark "Sayaç" look -->
-        <Style Selector="Window">
-            <Setter Property="Background" Value="#111111" />
-        </Style>
-        <Style Selector="TextBlock.h1">
-            <Setter Property="FontSize" Value="22" />
-            <Setter Property="FontWeight" Value="Bold" />
-            <Setter Property="Foreground" Value="#FFFFFF" />
-        </Style>
-        <Style Selector="TextBlock.label">
-            <Setter Property="Foreground" Value="#AAAAAA" />
-            <Setter Property="FontSize" Value="12" />
-        </Style>
+        <StyleInclude Source="avares://Sayac/Styles/Controls.axaml" />
     </Application.Styles>
 </Application>

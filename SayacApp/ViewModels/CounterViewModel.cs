@@ -15,8 +15,12 @@ public partial class CounterViewModel : ObservableObject
     public Guid Id { get; }
 
     // --- persisted fields ---
-    [ObservableProperty][NotifyPropertyChangedFor(nameof(RowText))] private string _name = "";
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(RowText))]
+    [NotifyPropertyChangedFor(nameof(InitialChar))]
+    private string _name = "";
     [ObservableProperty] private DateTimeOffset _targetUtc;
+    [ObservableProperty] private string _icon = "";
     [ObservableProperty][NotifyPropertyChangedFor(nameof(BackgroundBrush))] private string _bgColor = "0f0f0f";
     [ObservableProperty][NotifyPropertyChangedFor(nameof(TextBrush))] private string _textColor = "FFFFFF";
     [ObservableProperty] private int _fontSize = 15;
@@ -33,10 +37,24 @@ public partial class CounterViewModel : ObservableObject
     [ObservableProperty][NotifyPropertyChangedFor(nameof(RowText))] private string _remainingText = "";
     [ObservableProperty] private bool _isCompleted;
     [ObservableProperty] private string _targetText = "";
+    /// <summary>Days portion of the countdown ("364 gün"), empty under a day.</summary>
+    [ObservableProperty] private string _remainingBig = "";
+    /// <summary>"HH:mm:ss" portion (empty when completed).</summary>
+    [ObservableProperty] private string _remainingClock = "";
 
     public string RowText => $"{Name}: {RemainingText}";
     public IBrush BackgroundBrush => ToBrush(BgColor, "0f0f0f");
     public IBrush TextBrush => ToBrush(TextColor, "FFFFFF");
+
+    /// <summary>Tile chip fallback when no emoji is set: first non-space character of the name.</summary>
+    public string InitialChar
+    {
+        get
+        {
+            var n = (Name ?? "").Trim();
+            return n.Length > 0 ? n.Substring(0, 1).ToUpperInvariant() : "•";
+        }
+    }
 
     // NaN = "auto" in Avalonia layout; manual sizing only when AutoBoxSize is off.
     public double ManualWidth => AutoBoxSize ? double.NaN : BoxWidth;
@@ -45,7 +63,7 @@ public partial class CounterViewModel : ObservableObject
     /// <summary>Property names that should trigger a save when they change.</summary>
     public static readonly System.Collections.Generic.HashSet<string> PersistedProps = new()
     {
-        nameof(Name), nameof(TargetUtc), nameof(BgColor), nameof(TextColor),
+        nameof(Name), nameof(Icon), nameof(TargetUtc), nameof(BgColor), nameof(TextColor),
         nameof(FontSize), nameof(AutoBoxSize), nameof(BoxWidth), nameof(RowHeight),
         nameof(BgTransparent), nameof(Pinned)
     };
@@ -54,6 +72,7 @@ public partial class CounterViewModel : ObservableObject
     {
         Id = d.Id;
         _name = d.Name;
+        _icon = d.Icon;
         _targetUtc = d.TargetUtc;
         _bgColor = d.BgColor;
         _textColor = d.TextColor;
@@ -70,6 +89,7 @@ public partial class CounterViewModel : ObservableObject
     {
         Id = Id,
         Name = Name,
+        Icon = Icon,
         TargetUtc = TargetUtc,
         BgColor = BgColor,
         TextColor = TextColor,
@@ -84,6 +104,7 @@ public partial class CounterViewModel : ObservableObject
     public void Refresh(DateTimeOffset nowUtc)
     {
         RemainingText = TimeService.FormatRemaining(TargetUtc, nowUtc);
+        (RemainingBig, RemainingClock) = TimeService.FormatRemainingParts(TargetUtc, nowUtc);
         IsCompleted = TimeService.IsCompleted(TargetUtc, nowUtc);
         TargetText = TimeService.FormatTarget(TargetUtc);
     }

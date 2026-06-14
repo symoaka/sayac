@@ -1,4 +1,5 @@
 using System;
+using Avalonia;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -47,6 +48,19 @@ public partial class AppSettingsViewModel : ObservableObject
     {
         get => IsEnglish ? 1 : 0;
         set => IsEnglish = value == 1;
+    }
+
+    /// <summary>ComboBox index 0 = System, 1 = Light, 2 = Dark. Persists and applies live.</summary>
+    public int ThemeIndex
+    {
+        get => Settings.ThemeMode switch { "Light" => 1, "Dark" => 2, _ => 0 };
+        set
+        {
+            Settings.ThemeMode = value switch { 1 => "Light", 2 => "Dark", _ => "System" };
+            if (Application.Current is { } app)
+                app.RequestedThemeVariant = App.ThemeVariantFor(Settings.ThemeMode);
+            OnPropertyChanged();
+        }
     }
 
     /// <summary>ComboBox index 0..3 ↔ 1/3/5/All.</summary>

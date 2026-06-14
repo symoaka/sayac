@@ -6,6 +6,7 @@ using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using SayacApp.Services;
 using SayacApp.ViewModels;
@@ -30,6 +31,14 @@ public partial class App : Application
 
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
+    /// <summary>Maps the persisted ThemeMode string to an Avalonia variant ("System" → Default → follows OS).</summary>
+    public static ThemeVariant ThemeVariantFor(string mode) => mode switch
+    {
+        "Light" => ThemeVariant.Light,
+        "Dark" => ThemeVariant.Dark,
+        _ => ThemeVariant.Default,
+    };
+
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -39,6 +48,7 @@ public partial class App : Application
             _store = new SettingsStore();
             var data = _store.Load();
             _main = new MainViewModel(data, _store);
+            RequestedThemeVariant = ThemeVariantFor(data.Settings.ThemeMode);
             _hotkeys = new HotkeyService(_main.Settings);
 
             _main.EditCounterRequested += OpenCounterSettings;
@@ -85,7 +95,7 @@ public partial class App : Application
         WindowIcon? icon = null;
         try
         {
-            using var s = AssetLoader.Open(new Uri("avares://Sayac/Assets/avalonia-logo.ico"));
+            using var s = AssetLoader.Open(new Uri("avares://Sayac/Assets/soonish.ico"));
             icon = new WindowIcon(s);
         }
         catch { /* tray still works without a custom icon on some platforms */ }

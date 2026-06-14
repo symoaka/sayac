@@ -5,7 +5,7 @@
         x:Class="SayacApp.Views.CounterSettingsWindow"
         Width="420" SizeToContent="Height" CanResize="False"
         WindowStartupLocation="CenterScreen"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/soonish.ico"
         Title="{Binding [CounterSettings], Source={x:Static svc:LocalizationService.Instance}}">
 
     <Window.Resources>
@@ -13,84 +13,125 @@
     </Window.Resources>
 
     <ScrollViewer MaxHeight="780">
-        <StackPanel Margin="18" Spacing="10">
+        <StackPanel Margin="18" Spacing="14">
             <TextBlock Classes="h1"
                        Text="{Binding [CounterSettings], Source={x:Static svc:LocalizationService.Instance}}" />
 
-            <TextBlock Classes="label" Text="{Binding [ColName], Source={x:Static svc:LocalizationService.Instance}}" />
-            <TextBox Text="{Binding Counter.Name}" />
+            <!-- Name + target -->
+            <Border Classes="section">
+                <StackPanel Spacing="10">
+                    <TextBlock Classes="label" Text="{Binding [ColName], Source={x:Static svc:LocalizationService.Instance}}" />
+                    <TextBox Text="{Binding Counter.Name}" />
 
-            <Grid ColumnDefinitions="Auto,Auto,*">
-                <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,10,0">
-                    <TextBlock Classes="label" Text="{Binding [ColTarget], Source={x:Static svc:LocalizationService.Instance}}" />
-                    <DatePicker SelectedDate="{Binding TargetDate}" />
+                    <TextBlock Classes="label" Text="{Binding [Icon], Source={x:Static svc:LocalizationService.Instance}}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <ItemsControl Grid.Column="0" ItemsSource="{Binding IconChoices}">
+                            <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Classes="subtle" Width="38" Height="38" Padding="0" Margin="2" FontSize="18"
+                                            Content="{Binding}"
+                                            Command="{Binding $parent[ItemsControl].DataContext.SetIconCommand}"
+                                            CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBox Grid.Column="1" Width="64" MaxLength="4" VerticalAlignment="Top" Margin="6,2,0,0"
+                                 Text="{Binding Counter.Icon}" Watermark="🙂" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto,*">
+                        <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,10,0">
+                            <TextBlock Classes="label" Text="{Binding [When], Source={x:Static svc:LocalizationService.Instance}}" />
+                            <Button Classes="secondary" MinWidth="190" Content="{Binding WhenSummary}">
+                                <Button.Flyout>
+                                    <Flyout Placement="Bottom">
+                                        <StackPanel Spacing="8" Width="280">
+                                            <DatePicker SelectedDate="{Binding TargetDate}" HorizontalAlignment="Stretch" />
+                                            <TimePicker SelectedTime="{Binding TargetTime}" ClockIdentifier="24HourClock"
+                                                        HorizontalAlignment="Stretch" />
+                                        </StackPanel>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+                        </StackPanel>
+                        <CheckBox Grid.Column="1" VerticalAlignment="Bottom" IsChecked="{Binding Counter.Pinned}"
+                                  Content="{Binding [PinToMini], Source={x:Static svc:LocalizationService.Instance}}" />
+                    </Grid>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Spacing="2" Margin="0,0,10,0">
-                    <TextBlock Classes="label" Text="{Binding [ColTime], Source={x:Static svc:LocalizationService.Instance}}" />
-                    <TimePicker SelectedTime="{Binding TargetTime}" ClockIdentifier="24HourClock" />
+            </Border>
+
+            <!-- Colors -->
+            <Border Classes="section">
+                <StackPanel Spacing="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="h2" VerticalAlignment="Center"
+                                   Text="{Binding [BgColor], Source={x:Static svc:LocalizationService.Instance}}" />
+                        <Button Grid.Column="1" Classes="secondary" Command="{Binding SetTransparentCommand}"
+                                Content="{Binding [Transparent], Source={x:Static svc:LocalizationService.Instance}}" />
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding PaletteColors}">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="26" Height="26" Margin="2" Padding="0" CornerRadius="6"
+                                        BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}"
+                                        Background="{Binding Converter={StaticResource HexBrush}}"
+                                        Command="{Binding $parent[ItemsControl].DataContext.SetBgCommand}"
+                                        CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <TextBlock Classes="h2" Margin="0,4,0,0"
+                               Text="{Binding [TextColor], Source={x:Static svc:LocalizationService.Instance}}" />
+                    <ItemsControl ItemsSource="{Binding PaletteColors}">
+                        <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="26" Height="26" Margin="2" Padding="0" CornerRadius="6"
+                                        BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}"
+                                        Background="{Binding Converter={StaticResource HexBrush}}"
+                                        Command="{Binding $parent[ItemsControl].DataContext.SetTextCommand}"
+                                        CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
-                <CheckBox Grid.Column="2" VerticalAlignment="Bottom" IsChecked="{Binding Counter.Pinned}"
-                          Content="{Binding [PinToMini], Source={x:Static svc:LocalizationService.Instance}}" />
-            </Grid>
+            </Border>
 
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Grid.Column="0" Classes="label" VerticalAlignment="Center"
-                           Text="{Binding [BgColor], Source={x:Static svc:LocalizationService.Instance}}" />
-                <Button Grid.Column="1" Command="{Binding SetTransparentCommand}"
-                        Content="{Binding [Transparent], Source={x:Static svc:LocalizationService.Instance}}" />
-            </Grid>
-            <ItemsControl ItemsSource="{Binding PaletteColors}">
-                <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Width="26" Height="26" Margin="2" Padding="0"
-                                Background="{Binding Converter={StaticResource HexBrush}}"
-                                Command="{Binding $parent[ItemsControl].DataContext.SetBgCommand}"
-                                CommandParameter="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <!-- Sizing -->
+            <Border Classes="section">
+                <StackPanel Spacing="10">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="label"
+                                   Text="{Binding [FontSize], Source={x:Static svc:LocalizationService.Instance}}" />
+                        <TextBlock Grid.Column="1" Classes="value" Text="{Binding Counter.FontSize}" />
+                    </Grid>
+                    <Slider Minimum="8" Maximum="60" Value="{Binding Counter.FontSize}" />
 
-            <TextBlock Classes="label" Text="{Binding [TextColor], Source={x:Static svc:LocalizationService.Instance}}" />
-            <ItemsControl ItemsSource="{Binding PaletteColors}">
-                <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Width="26" Height="26" Margin="2" Padding="0"
-                                Background="{Binding Converter={StaticResource HexBrush}}"
-                                Command="{Binding $parent[ItemsControl].DataContext.SetTextCommand}"
-                                CommandParameter="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                    <CheckBox IsChecked="{Binding Counter.AutoBoxSize}"
+                              Content="{Binding [AutoBoxSize], Source={x:Static svc:LocalizationService.Instance}}" />
 
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Grid.Column="0" Classes="label"
-                           Text="{Binding [FontSize], Source={x:Static svc:LocalizationService.Instance}}" />
-                <TextBlock Grid.Column="1" Foreground="#E8E8E8" Text="{Binding Counter.FontSize}" />
-            </Grid>
-            <Slider Minimum="8" Maximum="60" Value="{Binding Counter.FontSize}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="label"
+                                   Text="{Binding [BoxWidth], Source={x:Static svc:LocalizationService.Instance}}" />
+                        <TextBlock Grid.Column="1" Classes="value" Text="{Binding Counter.BoxWidth}" />
+                    </Grid>
+                    <Slider Minimum="180" Maximum="1920" Value="{Binding Counter.BoxWidth}"
+                            IsEnabled="{Binding !Counter.AutoBoxSize}" />
 
-            <CheckBox IsChecked="{Binding Counter.AutoBoxSize}"
-                      Content="{Binding [AutoBoxSize], Source={x:Static svc:LocalizationService.Instance}}" />
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Grid.Column="0" Classes="label"
+                                   Text="{Binding [BoxHeight], Source={x:Static svc:LocalizationService.Instance}}" />
+                        <TextBlock Grid.Column="1" Classes="value" Text="{Binding Counter.RowHeight}" />
+                    </Grid>
+                    <Slider Minimum="18" Maximum="120" Value="{Binding Counter.RowHeight}"
+                            IsEnabled="{Binding !Counter.AutoBoxSize}" />
+                </StackPanel>
+            </Border>
 
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Grid.Column="0" Classes="label"
-                           Text="{Binding [BoxWidth], Source={x:Static svc:LocalizationService.Instance}}" />
-                <TextBlock Grid.Column="1" Foreground="#E8E8E8" Text="{Binding Counter.BoxWidth}" />
-            </Grid>
-            <Slider Minimum="180" Maximum="1920" Value="{Binding Counter.BoxWidth}"
-                    IsEnabled="{Binding !Counter.AutoBoxSize}" />
-
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBlock Grid.Column="0" Classes="label"
-                           Text="{Binding [BoxHeight], Source={x:Static svc:LocalizationService.Instance}}" />
-                <TextBlock Grid.Column="1" Foreground="#E8E8E8" Text="{Binding Counter.RowHeight}" />
-            </Grid>
-            <Slider Minimum="18" Maximum="120" Value="{Binding Counter.RowHeight}"
-                    IsEnabled="{Binding !Counter.AutoBoxSize}" />
-
-            <Button HorizontalAlignment="Right" Click="OnClose"
+            <Button HorizontalAlignment="Right" Classes="secondary" Click="OnClose"
                     Content="{Binding [Close], Source={x:Static svc:LocalizationService.Instance}}" />
         </StackPanel>
     </ScrollViewer>
