@@ -17,6 +17,13 @@ public partial class AppSettings : ObservableObject
     /// <summary>When true, counter tiles drop the animated progress glow for a clean, flat look.</summary>
     [ObservableProperty] private bool _minimalTiles;
 
+    /// <summary>
+    /// When true, the app uses CPU/software rendering instead of the GPU compositor,
+    /// cutting ~90 MB of graphics memory. Read once at startup (see Program.cs); changing
+    /// it only takes effect on the next launch.
+    /// </summary>
+    [ObservableProperty] private bool _performanceMode;
+
     [ObservableProperty] private bool _miniVisible = true;
     [ObservableProperty] private bool _miniLocked = true;
 

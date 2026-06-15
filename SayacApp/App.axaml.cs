@@ -10,6 +10,7 @@ using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
+using SayacApp.Models;
 using SayacApp.Services;
 using SayacApp.ViewModels;
 using SayacApp.Views;
@@ -18,6 +19,9 @@ namespace SayacApp;
 
 public partial class App : Application
 {
+    /// <summary>Document loaded in <see cref="Program.Main"/> (to choose the renderer) and reused here.</summary>
+    public static AppData? Preloaded;
+
     private SettingsStore _store = null!;
     private MainViewModel _main = null!;
     private HotkeyService _hotkeys = null!;
@@ -50,7 +54,7 @@ public partial class App : Application
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
             _store = new SettingsStore();
-            var data = _store.Load();
+            var data = Preloaded ?? _store.Load();
             _main = new MainViewModel(data, _store);
             RequestedThemeVariant = ThemeVariantFor(data.Settings.ThemeMode);
             _hotkeys = new HotkeyService(_main.Settings);

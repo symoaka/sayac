@@ -35,7 +35,13 @@ public sealed class SettingsStore
         };
     }
 
-    public AppData Load()
+    public AppData Load() => LoadData();
+
+    /// <summary>
+    /// Read the document without constructing a store (no dispatcher timer). Safe to call
+    /// from <c>Program.Main</c> before Avalonia is initialized, to read startup-only settings.
+    /// </summary>
+    public static AppData LoadData()
     {
         try
         {

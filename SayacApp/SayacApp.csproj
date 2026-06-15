@@ -8,9 +8,21 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
     <AssemblyName>Sayac</AssemblyName>
-    <Version>0.4.0</Version>
+    <Version>0.4.1</Version>
     <ApplicationIcon>Assets\soonish.ico</ApplicationIcon>
+
+    <!-- Memory tuning: workstation, non-concurrent GC has the smallest footprint, and
+         RetainVM=false returns freed segments to the OS. Good for a mostly-idle timer. -->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+    <RetainVMGarbageCollection>false</RetainVMGarbageCollection>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Aggressively release memory back to the OS (0-9). The app rarely allocates, so the
+         extra GC work is negligible while the heap stays trim. -->
+    <RuntimeHostConfigurationOption Include="System.GC.ConserveMemory" Value="9" Trim="false" />
+  </ItemGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
