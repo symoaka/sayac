@@ -84,8 +84,16 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Classes="tile" Width="324" Margin="0,0,12,12">
-                                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto">
+                            <Border Classes="tile" Width="324" Margin="0,0,12,12" Padding="0">
+                                <Panel>
+                                    <Border Classes="tilefill" Background="{Binding GlowBrush}"
+                                            RenderTransform="{Binding GlowTransform}"
+                                            IsVisible="{Binding !$parent[ItemsControl].DataContext.Settings.MinimalTiles}" />
+                                    <Border Classes="tileglow"
+                                            BorderBrush="{Binding GlowBorderBrush}"
+                                            BoxShadow="{Binding GlowShadow}"
+                                            IsVisible="{Binding !$parent[ItemsControl].DataContext.Settings.MinimalTiles}" />
+                                <Grid Margin="16" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto">
                                     <!-- color chip: emoji, or name initial as fallback -->
                                     <Border Grid.Row="0" Grid.Column="0" Classes="chip" Width="44" Height="44"
                                             VerticalAlignment="Top" Background="{Binding BackgroundBrush}">
@@ -120,6 +128,7 @@
                                                    IsVisible="{Binding RemainingClock, Converter={StaticResource NotEmpty}}" />
                                     </StackPanel>
                                 </Grid>
+                                </Panel>
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>

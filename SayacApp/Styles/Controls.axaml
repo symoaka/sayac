@@ -59,8 +59,25 @@
         <Setter Property="CornerRadius" Value="16" />
         <Setter Property="Padding" Value="16" />
     </Style>
-    <Style Selector="Border.tile:pointerover">
-        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+    <!-- Static colored edge + soft halo behind the tile (cached; not animated). -->
+    <Style Selector="Border.tileglow">
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="BorderThickness" Value="1.5" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+    </Style>
+
+    <!-- Progress fill: grows from the right edge as a GPU scaleX the transition eases
+         (smooth, no per-frame layout or blur). Background brush is bound per counter. -->
+    <Style Selector="Border.tilefill">
+        <Setter Property="CornerRadius" Value="16" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="RenderTransformOrigin" Value="1,0.5" />
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform"
+                                               Duration="0:0:1" Easing="LinearEasing" />
+            </Transitions>
+        </Setter>
     </Style>
 
     <!-- Color chip holding the counter's emoji / initial -->

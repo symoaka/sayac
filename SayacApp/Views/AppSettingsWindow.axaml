@@ -58,6 +58,8 @@
                     <Slider Grid.Row="2" Grid.Column="1" Width="180" Minimum="0" Maximum="255" Margin="0,10,0,0"
                             Value="{Binding Settings.MiniOpacity}" />
                 </Grid>
+                <Button Classes="secondary" HorizontalAlignment="Left" Command="{Binding RecoverMiniCommand}"
+                        Content="{Binding [RecoverMini], Source={x:Static svc:LocalizationService.Instance}}" />
             </StackPanel>
         </Border>
 
@@ -66,7 +68,7 @@
             <StackPanel Spacing="10">
                 <TextBlock Classes="h2"
                            Text="{Binding [Appearance], Source={x:Static svc:LocalizationService.Instance}}" />
-                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Grid.Column="0" Classes="value" VerticalAlignment="Center"
                                Text="{Binding [Theme], Source={x:Static svc:LocalizationService.Instance}}" />
                     <ComboBox Grid.Row="0" Grid.Column="1" Width="140" SelectedIndex="{Binding ThemeIndex}">
@@ -76,8 +78,15 @@
                     </ComboBox>
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Classes="value" VerticalAlignment="Center" Margin="0,10,0,0"
+                               Text="{Binding [CounterStyle], Source={x:Static svc:LocalizationService.Instance}}" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Width="140" Margin="0,10,0,0" SelectedIndex="{Binding CounterStyleIndex}">
+                        <ComboBoxItem Content="{Binding [StyleAnimated], Source={x:Static svc:LocalizationService.Instance}}" />
+                        <ComboBoxItem Content="{Binding [StyleMinimal], Source={x:Static svc:LocalizationService.Instance}}" />
+                    </ComboBox>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Classes="value" VerticalAlignment="Center" Margin="0,10,0,0"
                                Text="{Binding [Language], Source={x:Static svc:LocalizationService.Instance}}" />
-                    <ComboBox Grid.Row="1" Grid.Column="1" Width="140" Margin="0,10,0,0" SelectedIndex="{Binding LanguageIndex}">
+                    <ComboBox Grid.Row="2" Grid.Column="1" Width="140" Margin="0,10,0,0" SelectedIndex="{Binding LanguageIndex}">
                         <ComboBoxItem>Türkçe</ComboBoxItem>
                         <ComboBoxItem>English</ComboBoxItem>
                     </ComboBox>

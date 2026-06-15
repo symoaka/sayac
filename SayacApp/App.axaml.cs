@@ -28,7 +28,7 @@ public partial class App : Application
     private CounterSettingsWindow? _counterWindow;
 
     private TrayIcon? _tray;
-    private NativeMenuItem? _miMain, _miMini, _miLock, _miSettings, _miExit;
+    private NativeMenuItem? _miMain, _miMini, _miLock, _miRecover, _miSettings, _miExit;
     private bool _exiting;
 
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
@@ -124,6 +124,8 @@ public partial class App : Application
         _miMini.Click += (_, _) => ToggleMini();
         _miLock = new NativeMenuItem();
         _miLock.Click += (_, _) => ToggleLock();
+        _miRecover = new NativeMenuItem();
+        _miRecover.Click += (_, _) => OnRecoverMini();
         _miSettings = new NativeMenuItem();
         _miSettings.Click += (_, _) => OpenAppSettings();
         _miExit = new NativeMenuItem();
@@ -133,6 +135,7 @@ public partial class App : Application
         menu.Add(_miMain);
         menu.Add(_miMini);
         menu.Add(_miLock);
+        menu.Add(_miRecover);
         menu.Add(_miSettings);
         menu.Add(new NativeMenuItemSeparator());
         menu.Add(_miExit);
@@ -152,6 +155,7 @@ public partial class App : Application
         if (_miMain is not null) _miMain.Header = loc["TrayToggleMain"];
         if (_miMini is not null) _miMini.Header = loc["TrayToggleMini"];
         if (_miLock is not null) _miLock.Header = loc["TrayToggleLock"];
+        if (_miRecover is not null) _miRecover.Header = loc["TrayRecoverMini"];
         if (_miSettings is not null) _miSettings.Header = loc["TraySettings"];
         if (_miExit is not null) _miExit.Header = loc["TrayExit"];
     }
@@ -173,6 +177,20 @@ public partial class App : Application
 
     private void ToggleLock() => _main.Settings.MiniLocked = !_main.Settings.MiniLocked;
 
+    /// <summary>Bring the (possibly off-screen / hidden) mini overlay back to a visible corner.</summary>
+    private void OnRecoverMini()
+    {
+        if (_miniWindow is null) return;
+        _main.Settings.MiniX = double.NaN;   // clear off-screen position (also triggers save)
+        _main.Settings.MiniY = double.NaN;
+        if (!_miniWindow.IsVisible)
+        {
+            _miniWindow.Show();
+            _main.Settings.MiniVisible = true;
+        }
+        _miniWindow.RecoverToDefault();
+    }
+
     private void OnMainClosing(object? sender, WindowClosingEventArgs e)
     {
         if (_exiting) return;
@@ -185,6 +203,7 @@ public partial class App : Application
         if (_settingsWindow is not null) { _settingsWindow.Activate(); return; }
         var vm = new AppSettingsViewModel(_main.Settings, _hotkeys);
         vm.Changed += () => _main.RequestSave();
+        vm.RecoverMiniRequested += OnRecoverMini;
         _settingsWindow = new AppSettingsWindow { DataContext = vm };
         _settingsWindow.Closed += (_, _) => _settingsWindow = null;
         _settingsWindow.Show();

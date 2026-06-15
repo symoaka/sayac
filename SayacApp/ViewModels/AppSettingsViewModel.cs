@@ -20,6 +20,11 @@ public partial class AppSettingsViewModel : ObservableObject
     /// <summary>Raised when a non-observable setting (a hotkey) changed, so the app can save.</summary>
     public event Action? Changed;
 
+    /// <summary>Raised when the user asks to bring the mini overlay back on-screen.</summary>
+    public event Action? RecoverMiniRequested;
+
+    [RelayCommand] private void RecoverMini() => RecoverMiniRequested?.Invoke();
+
     public AppSettingsViewModel(AppSettings settings, HotkeyService hotkeys)
     {
         Settings = settings;
@@ -59,6 +64,17 @@ public partial class AppSettingsViewModel : ObservableObject
             Settings.ThemeMode = value switch { 1 => "Light", 2 => "Dark", _ => "System" };
             if (Application.Current is { } app)
                 app.RequestedThemeVariant = App.ThemeVariantFor(Settings.ThemeMode);
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>ComboBox index 0 = Animated tiles, 1 = Minimal tiles.</summary>
+    public int CounterStyleIndex
+    {
+        get => Settings.MinimalTiles ? 1 : 0;
+        set
+        {
+            Settings.MinimalTiles = value == 1;
             OnPropertyChanged();
         }
     }

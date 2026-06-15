@@ -14,6 +14,9 @@ public partial class AppSettings : ObservableObject
     /// <summary>UI theme: "System" follows the OS, otherwise "Light" | "Dark".</summary>
     [ObservableProperty] private string _themeMode = "Dark";
 
+    /// <summary>When true, counter tiles drop the animated progress glow for a clean, flat look.</summary>
+    [ObservableProperty] private bool _minimalTiles;
+
     [ObservableProperty] private bool _miniVisible = true;
     [ObservableProperty] private bool _miniLocked = true;
 

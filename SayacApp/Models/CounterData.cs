@@ -28,6 +28,9 @@ public sealed class CounterData
 
     /// <summary>Whether this counter appears in the mini overlay at all (separate from Pinned, which only affects ordering).</summary>
     public bool ShowInMini { get; set; } = true;
+
+    /// <summary>When the counter was created — the start anchor for the progress fill.</summary>
+    public DateTimeOffset CreatedUtc { get; set; } = DateTimeOffset.UtcNow;
 }
 
 /// <summary>Root persisted document.</summary>

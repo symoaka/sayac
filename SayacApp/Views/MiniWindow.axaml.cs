@@ -35,6 +35,13 @@ public partial class MiniWindow : Window
         ClickThroughService.HideFromAltTab(this);
     }
 
+    /// <summary>Snap back to a visible default corner, ignoring any saved (off-screen) position.</summary>
+    public void RecoverToDefault()
+    {
+        PlaceDefaultCorner();
+        Activate();
+    }
+
     private void RestorePosition()
     {
         if (Vm?.HasSavedPosition == true)
@@ -42,7 +49,11 @@ public partial class MiniWindow : Window
             Position = new PixelPoint((int)Vm.SavedX, (int)Vm.SavedY);
             return;
         }
+        PlaceDefaultCorner();
+    }
 
+    private void PlaceDefaultCorner()
+    {
         var wa = Screens.Primary?.WorkingArea;
         if (wa is { } area)
         {
