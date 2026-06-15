@@ -36,12 +36,29 @@
                         Content="{Binding NewWhenSummary}">
                     <Button.Flyout>
                         <Flyout Placement="Bottom">
-                            <StackPanel Spacing="8" Width="280">
-                                <TextBlock Classes="label"
-                                           Text="{Binding [When], Source={x:Static svc:LocalizationService.Instance}}" />
-                                <DatePicker SelectedDate="{Binding NewDate}" HorizontalAlignment="Stretch" />
-                                <TimePicker SelectedTime="{Binding NewTime}" ClockIdentifier="24HourClock"
-                                            HorizontalAlignment="Stretch" />
+                            <StackPanel Spacing="12" Width="300" Margin="4">
+                                <StackPanel Spacing="6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="📅" FontSize="14" />
+                                        <TextBlock Classes="h2"
+                                                   Text="{Binding [DateLabel], Source={x:Static svc:LocalizationService.Instance}}" />
+                                    </StackPanel>
+                                    <CalendarDatePicker SelectedDate="{Binding NewCalendarDate}" HorizontalAlignment="Stretch" />
+                                </StackPanel>
+                                <StackPanel Spacing="6">
+                                    <StackPanel Orientation="Horizontal" Spacing="6">
+                                        <TextBlock Text="🕐" FontSize="14" />
+                                        <TextBlock Classes="h2"
+                                                   Text="{Binding [TimeLabel], Source={x:Static svc:LocalizationService.Instance}}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <NumericUpDown Width="110" Minimum="0" Maximum="23" Increment="1"
+                                                       FormatString="00" Value="{Binding NewHour}" />
+                                        <TextBlock Classes="h2" Text=":" VerticalAlignment="Center" />
+                                        <NumericUpDown Width="110" Minimum="0" Maximum="59" Increment="1"
+                                                       FormatString="00" Value="{Binding NewMinute}" />
+                                    </StackPanel>
+                                </StackPanel>
                             </StackPanel>
                         </Flyout>
                     </Button.Flyout>

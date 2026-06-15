@@ -53,7 +53,8 @@ public partial class MiniViewModel : ObservableObject
 
     private void OnCounterChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(CounterViewModel.Pinned))
+        if (e.PropertyName == nameof(CounterViewModel.Pinned) ||
+            e.PropertyName == nameof(CounterViewModel.ShowInMini))
             Recompute();
     }
 
@@ -78,8 +79,8 @@ public partial class MiniViewModel : ObservableObject
         var limit = _settings.MiniDisplayCount <= 0 ? int.MaxValue : _settings.MiniDisplayCount;
 
         var ordered = new System.Collections.Generic.List<CounterViewModel>();
-        foreach (var c in _all) if (c.Pinned) ordered.Add(c);
-        foreach (var c in _all) if (!c.Pinned) ordered.Add(c);
+        foreach (var c in _all) if (c.ShowInMini && c.Pinned) ordered.Add(c);
+        foreach (var c in _all) if (c.ShowInMini && !c.Pinned) ordered.Add(c);
         if (ordered.Count > limit) ordered.RemoveRange(limit, ordered.Count - limit);
 
         Visible.Clear();

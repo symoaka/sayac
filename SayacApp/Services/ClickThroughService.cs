@@ -27,10 +27,34 @@ public static class ClickThroughService
         }
     }
 
+    /// <summary>
+    /// Hides a window from the Windows Alt-Tab switcher (and taskbar) by adding the
+    /// WS_EX_TOOLWINDOW extended style. Used for the mini overlay so only the main
+    /// window appears in Alt-Tab. Set once; no-op on macOS/Linux.
+    /// </summary>
+    public static void HideFromAltTab(Window window)
+    {
+        try
+        {
+            if (!OperatingSystem.IsWindows()) return;
+            var handle = window.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
+            if (handle == IntPtr.Zero) return;
+
+            var ex = (long)GetWindowLongPtr(handle, GWL_EXSTYLE);
+            ex |= WS_EX_TOOLWINDOW;
+            SetWindowLongPtr(handle, GWL_EXSTYLE, new IntPtr(ex));
+        }
+        catch
+        {
+            // Non-fatal: overlay just stays in Alt-Tab.
+        }
+    }
+
     // ---------- Windows ----------
     private const int GWL_EXSTYLE = -20;
     private const long WS_EX_TRANSPARENT = 0x00000020;
     private const long WS_EX_LAYERED = 0x00080000;
+    private const long WS_EX_TOOLWINDOW = 0x00000080;
 
     [DllImport("user32.dll", EntryPoint = "GetWindowLongPtrW")]
     private static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);

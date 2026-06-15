@@ -25,6 +25,9 @@ public sealed class CounterData
     public int RowHeight { get; set; } = 26;
     public bool BgTransparent { get; set; }
     public bool Pinned { get; set; }
+
+    /// <summary>Whether this counter appears in the mini overlay at all (separate from Pinned, which only affects ordering).</summary>
+    public bool ShowInMini { get; set; } = true;
 }
 
 /// <summary>Root persisted document.</summary>

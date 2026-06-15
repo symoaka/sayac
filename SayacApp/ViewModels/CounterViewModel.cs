@@ -32,6 +32,7 @@ public partial class CounterViewModel : ObservableObject
     [ObservableProperty][NotifyPropertyChangedFor(nameof(ManualHeight))] private int _rowHeight = 26;
     [ObservableProperty] private bool _bgTransparent;
     [ObservableProperty] private bool _pinned;
+    [ObservableProperty] private bool _showInMini = true;
 
     // --- runtime-only ---
     [ObservableProperty][NotifyPropertyChangedFor(nameof(RowText))] private string _remainingText = "";
@@ -65,7 +66,7 @@ public partial class CounterViewModel : ObservableObject
     {
         nameof(Name), nameof(Icon), nameof(TargetUtc), nameof(BgColor), nameof(TextColor),
         nameof(FontSize), nameof(AutoBoxSize), nameof(BoxWidth), nameof(RowHeight),
-        nameof(BgTransparent), nameof(Pinned)
+        nameof(BgTransparent), nameof(Pinned), nameof(ShowInMini)
     };
 
     public CounterViewModel(CounterData d)
@@ -82,6 +83,7 @@ public partial class CounterViewModel : ObservableObject
         _rowHeight = d.RowHeight;
         _bgTransparent = d.BgTransparent;
         _pinned = d.Pinned;
+        _showInMini = d.ShowInMini;
         Refresh(DateTimeOffset.UtcNow);
     }
 
@@ -99,6 +101,7 @@ public partial class CounterViewModel : ObservableObject
         RowHeight = RowHeight,
         BgTransparent = BgTransparent,
         Pinned = Pinned,
+        ShowInMini = ShowInMini,
     };
 
     public void Refresh(DateTimeOffset nowUtc)

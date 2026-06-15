@@ -2,6 +2,8 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -41,6 +43,8 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        DampenPickerWheel();
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
@@ -87,6 +91,20 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+    /// <summary>
+    /// The calendar grid and numeric time steppers navigate/spin on every mouse-wheel
+    /// event; on a trackpad a single gesture fires many events and flies through
+    /// months/values. Swallow wheel on those controls (class handler, so it also covers
+    /// the calendar popup) — they still change via clicks, arrows and typing.
+    /// </summary>
+    private static void DampenPickerWheel()
+    {
+        InputElement.PointerWheelChangedEvent.AddClassHandler<Calendar>(
+            (_, e) => e.Handled = true, RoutingStrategies.Tunnel);
+        InputElement.PointerWheelChangedEvent.AddClassHandler<NumericUpDown>(
+            (_, e) => e.Handled = true, RoutingStrategies.Tunnel);
     }
 
     // ---------- tray ----------

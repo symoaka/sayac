@@ -31,22 +31,66 @@ public partial class CounterSettingsViewModel : ObservableObject
         }
     }
 
-    public TimeSpan? TargetTime
+    /// <summary>DateTime?-typed mirror of TargetDate for CalendarDatePicker.SelectedDate.</summary>
+    public DateTime? CalendarDate
     {
-        get => Counter.TargetUtc.ToLocalTime().TimeOfDay;
+        get => Counter.TargetUtc.ToLocalTime().Date;
         set
         {
             if (value is null) return;
-            UpdateTarget(Counter.TargetUtc.ToLocalTime().LocalDateTime.Date, value.Value);
+            UpdateTarget(value.Value.Date, Counter.TargetUtc.ToLocalTime().TimeOfDay);
+        }
+    }
+
+    public decimal TargetHour
+    {
+        get => Counter.TargetUtc.ToLocalTime().Hour;
+        set
+        {
+            var local = Counter.TargetUtc.ToLocalTime();
+            var h = Math.Clamp((int)value, 0, 23);
+            UpdateTarget(local.Date, new TimeSpan(h, local.Minute, 0));
+        }
+    }
+
+    public decimal TargetMinute
+    {
+        get => Counter.TargetUtc.ToLocalTime().Minute;
+        set
+        {
+            var local = Counter.TargetUtc.ToLocalTime();
+            var m = Math.Clamp((int)value, 0, 59);
+            UpdateTarget(local.Date, new TimeSpan(local.Hour, m, 0));
         }
     }
 
     private void UpdateTarget(DateTime localDate, TimeSpan localTime)
     {
         Counter.TargetUtc = TimeService.LocalToUtc(localDate, localTime);
+        RaiseTargetChanged();
+    }
+
+    private void RaiseTargetChanged()
+    {
         OnPropertyChanged(nameof(TargetDate));
-        OnPropertyChanged(nameof(TargetTime));
+        OnPropertyChanged(nameof(CalendarDate));
+        OnPropertyChanged(nameof(TargetHour));
+        OnPropertyChanged(nameof(TargetMinute));
         OnPropertyChanged(nameof(WhenSummary));
+    }
+
+    // Quick on-the-fly nudges of the target time (no need to retype a date).
+    [RelayCommand] private void AddOneMinute() => AdjustTarget(1);
+    [RelayCommand] private void AddFiveMinutes() => AdjustTarget(5);
+    [RelayCommand] private void AddOneHour() => AdjustTarget(60);
+    [RelayCommand] private void SubtractOneMinute() => AdjustTarget(-1);
+    [RelayCommand] private void SubtractFiveMinutes() => AdjustTarget(-5);
+    [RelayCommand] private void SubtractOneHour() => AdjustTarget(-60);
+
+    private void AdjustTarget(int minutes)
+    {
+        Counter.TargetUtc = Counter.TargetUtc.AddMinutes(minutes);
+        RaiseTargetChanged();
     }
 
     [RelayCommand]

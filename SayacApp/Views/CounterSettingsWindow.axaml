@@ -17,7 +17,7 @@
             <TextBlock Classes="h1"
                        Text="{Binding [CounterSettings], Source={x:Static svc:LocalizationService.Instance}}" />
 
-            <!-- Name + target -->
+            <!-- Name + icon -->
             <Border Classes="section">
                 <StackPanel Spacing="10">
                     <TextBlock Classes="label" Text="{Binding [ColName], Source={x:Static svc:LocalizationService.Instance}}" />
@@ -39,25 +39,66 @@
                         <TextBox Grid.Column="1" Width="64" MaxLength="4" VerticalAlignment="Top" Margin="6,2,0,0"
                                  Text="{Binding Counter.Icon}" Watermark="🙂" />
                     </Grid>
+                </StackPanel>
+            </Border>
 
-                    <Grid ColumnDefinitions="Auto,*">
-                        <StackPanel Grid.Column="0" Spacing="2" Margin="0,0,10,0">
-                            <TextBlock Classes="label" Text="{Binding [When], Source={x:Static svc:LocalizationService.Instance}}" />
-                            <Button Classes="secondary" MinWidth="190" Content="{Binding WhenSummary}">
-                                <Button.Flyout>
-                                    <Flyout Placement="Bottom">
-                                        <StackPanel Spacing="8" Width="280">
-                                            <DatePicker SelectedDate="{Binding TargetDate}" HorizontalAlignment="Stretch" />
-                                            <TimePicker SelectedTime="{Binding TargetTime}" ClockIdentifier="24HourClock"
-                                                        HorizontalAlignment="Stretch" />
+            <!-- Target date/time -->
+            <Border Classes="section">
+                <StackPanel Spacing="10">
+                    <TextBlock Classes="label" Text="{Binding [When], Source={x:Static svc:LocalizationService.Instance}}" />
+                    <Button Classes="secondary" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"
+                            Content="{Binding WhenSummary}">
+                        <Button.Flyout>
+                            <Flyout Placement="Bottom">
+                                <StackPanel Spacing="12" Width="300" Margin="4">
+                                    <StackPanel Spacing="6">
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <TextBlock Text="📅" FontSize="14" />
+                                            <TextBlock Classes="h2" Text="{Binding [DateLabel], Source={x:Static svc:LocalizationService.Instance}}" />
                                         </StackPanel>
-                                    </Flyout>
-                                </Button.Flyout>
-                            </Button>
-                        </StackPanel>
-                        <CheckBox Grid.Column="1" VerticalAlignment="Bottom" IsChecked="{Binding Counter.Pinned}"
+                                        <CalendarDatePicker SelectedDate="{Binding CalendarDate}" HorizontalAlignment="Stretch" />
+                                    </StackPanel>
+                                    <StackPanel Spacing="6">
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <TextBlock Text="🕐" FontSize="14" />
+                                            <TextBlock Classes="h2" Text="{Binding [TimeLabel], Source={x:Static svc:LocalizationService.Instance}}" />
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <NumericUpDown Width="110" Minimum="0" Maximum="23" Increment="1"
+                                                           FormatString="00" Value="{Binding TargetHour}" />
+                                            <TextBlock Classes="h2" Text=":" VerticalAlignment="Center" />
+                                            <NumericUpDown Width="110" Minimum="0" Maximum="59" Increment="1"
+                                                           FormatString="00" Value="{Binding TargetMinute}" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel Spacing="6">
+                                        <TextBlock Classes="label" Text="{Binding [QuickAdjust], Source={x:Static svc:LocalizationService.Instance}}" />
+                                        <WrapPanel>
+                                            <Button Classes="subtle" Margin="0,0,4,4" MinWidth="52" HorizontalContentAlignment="Center"
+                                                    Content="+1m" Command="{Binding AddOneMinuteCommand}" />
+                                            <Button Classes="subtle" Margin="0,0,4,4" MinWidth="52" HorizontalContentAlignment="Center"
+                                                    Content="+5m" Command="{Binding AddFiveMinutesCommand}" />
+                                            <Button Classes="subtle" Margin="0,0,4,4" MinWidth="52" HorizontalContentAlignment="Center"
+                                                    Content="+1h" Command="{Binding AddOneHourCommand}" />
+                                            <Button Classes="subtle" Margin="0,0,4,4" MinWidth="52" HorizontalContentAlignment="Center"
+                                                    Content="-1m" Command="{Binding SubtractOneMinuteCommand}" />
+                                            <Button Classes="subtle" Margin="0,0,4,4" MinWidth="52" HorizontalContentAlignment="Center"
+                                                    Content="-5m" Command="{Binding SubtractFiveMinutesCommand}" />
+                                            <Button Classes="subtle" Margin="0,0,4,4" MinWidth="52" HorizontalContentAlignment="Center"
+                                                    Content="-1h" Command="{Binding SubtractOneHourCommand}" />
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <StackPanel Orientation="Horizontal" Spacing="16" Margin="0,4,0,0">
+                        <CheckBox IsChecked="{Binding Counter.Pinned}"
                                   Content="{Binding [PinToMini], Source={x:Static svc:LocalizationService.Instance}}" />
-                    </Grid>
+                        <CheckBox IsChecked="{Binding Counter.ShowInMini}"
+                                  Content="{Binding [ShowInMini], Source={x:Static svc:LocalizationService.Instance}}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

@@ -22,7 +22,7 @@ public partial class MainViewModel : ObservableObject
 
     // New-counter input
     [ObservableProperty] private string _newName = "";
-    [ObservableProperty] private DateTimeOffset? _newDate = DateTimeOffset.Now;
+    [ObservableProperty] private DateTime? _newCalendarDate = DateTime.Now.Date;
     [ObservableProperty] private TimeSpan? _newTime = DateTime.Now.TimeOfDay;
 
     [ObservableProperty] private bool _hasCounters;
@@ -32,14 +32,32 @@ public partial class MainViewModel : ObservableObject
     {
         get
         {
-            if (NewDate is null || NewTime is null) return "—";
-            var dt = NewDate.Value.Date + NewTime.Value;
+            if (NewCalendarDate is null || NewTime is null) return "—";
+            var dt = NewCalendarDate.Value.Date + NewTime.Value;
             return dt.ToString("dd MMM yyyy · HH:mm");
         }
     }
 
-    partial void OnNewDateChanged(DateTimeOffset? value) => OnPropertyChanged(nameof(NewWhenSummary));
-    partial void OnNewTimeChanged(TimeSpan? value) => OnPropertyChanged(nameof(NewWhenSummary));
+    public decimal NewHour
+    {
+        get => NewTime?.Hours ?? 0;
+        set => NewTime = new TimeSpan(Math.Clamp((int)value, 0, 23), NewTime?.Minutes ?? 0, 0);
+    }
+
+    public decimal NewMinute
+    {
+        get => NewTime?.Minutes ?? 0;
+        set => NewTime = new TimeSpan(NewTime?.Hours ?? 0, Math.Clamp((int)value, 0, 59), 0);
+    }
+
+    partial void OnNewCalendarDateChanged(DateTime? value) => OnPropertyChanged(nameof(NewWhenSummary));
+
+    partial void OnNewTimeChanged(TimeSpan? value)
+    {
+        OnPropertyChanged(nameof(NewWhenSummary));
+        OnPropertyChanged(nameof(NewHour));
+        OnPropertyChanged(nameof(NewMinute));
+    }
 
     public event Action<CounterViewModel>? EditCounterRequested;
     public event Action? OpenSettingsRequested;
@@ -82,13 +100,13 @@ public partial class MainViewModel : ObservableObject
             MessageRequested?.Invoke(Loc["Warning"], Loc["NameEmpty"]);
             return;
         }
-        if (NewDate is null || NewTime is null)
+        if (NewCalendarDate is null || NewTime is null)
         {
             MessageRequested?.Invoke(Loc["Warning"], Loc["NameEmpty"]);
             return;
         }
 
-        var targetUtc = TimeService.LocalToUtc(NewDate.Value.LocalDateTime.Date, NewTime.Value);
+        var targetUtc = TimeService.LocalToUtc(NewCalendarDate.Value.Date, NewTime.Value);
         // Give each new counter a vibrant identity color (cycles through the colored
         // part of the palette, indices 8..23) so the tiles are colorful out of the box.
         var colored = Palette.Colors;

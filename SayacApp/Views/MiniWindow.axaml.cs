@@ -32,6 +32,7 @@ public partial class MiniWindow : Window
         base.OnOpened(e);
         RestorePosition();
         ApplyLock();
+        ClickThroughService.HideFromAltTab(this);
     }
 
     private void RestorePosition()
